@@ -11,15 +11,21 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         Scanner in = getScannerFromInputFile("basic.txt");
-        handleInput(in);
 
+        City enterCity = handleInput(in);
+        enterCity.cacheList.get(0).addVideo(enterCity.videoList.get(2));
+        enterCity.cacheList.get(1).addVideo(enterCity.videoList.get(3));
+        enterCity.cacheList.get(1).addVideo(enterCity.videoList.get(1));
+        enterCity.cacheList.get(2).addVideo(enterCity.videoList.get(0));
+        enterCity.cacheList.get(2).addVideo(enterCity.videoList.get(1));
+        System.out.println(enterCity.computeScore());
     }
 
     public static Scanner getScannerFromInputFile(String fileName) throws FileNotFoundException {
         return new Scanner(new FileInputStream(new File("Input/" + fileName)));
     }
 
-    public static void handleInput(Scanner in) {
+    public static City handleInput(Scanner in) {
         int numberOfVideos = in.nextInt();
         int numberOfEndpoints = in.nextInt();
         int numberOfRequests = in.nextInt();
@@ -57,6 +63,8 @@ public class Main {
             }
 
             listOfEndpoints.add(tmp);
+
+
         }
 
 
@@ -70,5 +78,7 @@ public class Main {
             listOfEndpoints.get(endpointId).addRequest(listOfVideos.get(videoId), numberOfTimesVideoIsRequested);
         }
         ///////////////////////////////////////////////////////////////////////////////
+        return new City(listOfCaches, listOfEndpoints, listOfVideos);
     }
+
 }
