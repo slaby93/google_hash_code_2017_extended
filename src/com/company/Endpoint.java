@@ -31,17 +31,14 @@ public class Endpoint implements Serializable {
         return this.listOfCaches;
     }
 
-    public int[] computeScore() {
+    public int computeScore() {
         final int[] score = {0};
-        final int[] sumOfRequests = {0};
         this.getVideos().forEach(video -> {
             int lowestLat = findLowestLatForVideo(video);
             int numberOfRequests = this.requests.get(video);
             score[0] += lowestLat * numberOfRequests;
-            sumOfRequests[0] += numberOfRequests;
         });
-        int finalScore = score[0] / sumOfRequests[0];
-        return new int[]{score[0], sumOfRequests[0]};
+        return score[0];
 
     }
 

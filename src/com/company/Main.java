@@ -9,15 +9,9 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        String input = interceptInput(getScannerFromInputFile("basic.txt"));
-        City enterCity = createClearCity(input);
-        enterCity.cacheList.get(0).addVideo(enterCity.videoList.get(2));
-        enterCity.cacheList.get(1).addVideo(enterCity.videoList.get(3));
-        enterCity.cacheList.get(1).addVideo(enterCity.videoList.get(1));
-        enterCity.cacheList.get(2).addVideo(enterCity.videoList.get(0));
-        enterCity.cacheList.get(2).addVideo(enterCity.videoList.get(1));
+        String input = interceptInput(getScannerFromInputFile("vidi"));
 
-        System.out.println(enterCity.computeScore());
+        Solution.main(input);
     }
 
 

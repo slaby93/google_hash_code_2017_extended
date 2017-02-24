@@ -20,13 +20,11 @@ public class City implements Serializable {
 
     public int computeScore() {
         final int[] score = {0};
-        final int[] totalRequests = {0};
         this.endpointList.forEach(endpoint -> {
-            int[] sct = endpoint.computeScore();
-            score[0] += sct[0];
-            totalRequests[0] += sct[1];
+            int sct = endpoint.computeScore();
+            score[0] += sct;
         });
-        return ((score[0] * 10) / totalRequests[0]) * 100;
+        return score[0];
     }
 
     public String returnOutput() {
