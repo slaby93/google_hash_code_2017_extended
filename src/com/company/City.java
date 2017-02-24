@@ -27,4 +27,25 @@ public class City {
         });
         return ((score[0] * 10) / totalRequests[0]) * 100;
     }
+
+    public String returnOutput() {
+        StringBuilder sb = new StringBuilder();
+        final int[] numberOfUsedCacheServers = {0};
+        this.cacheList.forEach(cache -> {
+            if (cache.listOfVideos.size() > 0) {
+                ++numberOfUsedCacheServers[0];
+            }
+        });
+        sb.append(numberOfUsedCacheServers[0] + "\n");
+        this.cacheList.forEach(cache -> {
+            if (cache.listOfVideos.size() > 0) {
+                sb.append(cache.id + " ");
+                cache.listOfVideos.forEach(vid -> {
+                    sb.append(vid.id + " ");
+                });
+                sb.append("\n");
+            }
+        });
+        return sb.toString();
+    }
 }

@@ -1,8 +1,6 @@
 package com.company;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -18,7 +16,15 @@ public class Main {
         enterCity.cacheList.get(1).addVideo(enterCity.videoList.get(1));
         enterCity.cacheList.get(2).addVideo(enterCity.videoList.get(0));
         enterCity.cacheList.get(2).addVideo(enterCity.videoList.get(1));
-        System.out.println(enterCity.computeScore());
+//        System.out.println(enterCity.computeScore());
+//        System.out.println();
+         writeOutput(enterCity.returnOutput());
+    }
+
+    public static void writeOutput(String out) throws IOException {
+        PrintWriter pw = new PrintWriter("output.txt");
+        pw.write(out.trim());
+        pw.close();
     }
 
     public static Scanner getScannerFromInputFile(String fileName) throws FileNotFoundException {
