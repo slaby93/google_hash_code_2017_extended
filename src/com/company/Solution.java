@@ -9,14 +9,14 @@ public class Solution {
 
 
     public static void main(String input) throws IOException {
-        int score = 0;
+        long score = 0;
         City sol = null;
         for (int i = 0; i < 10; i++) {
             City c = Main.createClearCity(input);
             fillRandomlyCity(c);
-            int tmp = c.computeScore();
+            long tmp = c.computeScore();
             System.out.println(tmp);
-            if(tmp > score){
+            if (tmp > score) {
                 sol = c;
                 score = tmp;
             }

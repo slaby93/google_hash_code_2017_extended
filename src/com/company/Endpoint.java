@@ -31,8 +31,8 @@ public class Endpoint implements Serializable {
         return this.listOfCaches;
     }
 
-    public int computeScore() {
-        final int[] score = {0};
+    public long computeScore() {
+        final long[] score = {0};
         this.getVideos().forEach(video -> {
             int lowestLat = findLowestLatForVideo(video);
             int numberOfRequests = this.requests.get(video);

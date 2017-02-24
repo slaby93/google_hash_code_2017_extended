@@ -18,11 +18,10 @@ public class City implements Serializable {
         videoList = videos;
     }
 
-    public int computeScore() {
-        final int[] score = {0};
+    public long computeScore() {
+        final long[] score = {0};
         this.endpointList.forEach(endpoint -> {
-            int sct = endpoint.computeScore();
-            score[0] += sct;
+            score[0] += endpoint.computeScore();
         });
         return score[0];
     }
