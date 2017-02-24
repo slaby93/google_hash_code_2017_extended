@@ -8,19 +8,51 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        Scanner in = getScannerFromInputFile("basic.txt");
 
-        City enterCity = handleInput(in);
-        City copy = enterCity.deepClone();
+        String input = interceptInput(getScannerFromInputFile("basic.txt"));
+        City enterCity = createClearCity(input);
         enterCity.cacheList.get(0).addVideo(enterCity.videoList.get(2));
         enterCity.cacheList.get(1).addVideo(enterCity.videoList.get(3));
         enterCity.cacheList.get(1).addVideo(enterCity.videoList.get(1));
         enterCity.cacheList.get(2).addVideo(enterCity.videoList.get(0));
         enterCity.cacheList.get(2).addVideo(enterCity.videoList.get(1));
+
         System.out.println(enterCity.computeScore());
-        System.out.println(copy.computeScore());
-//        System.out.println();
-//        writeOutput(enterCity.returnOutput());
+    }
+
+
+    public static String interceptInput(Scanner in) {
+        StringBuilder sb = new StringBuilder();
+        int numberOfVideos = in.nextInt();
+        int numberOfEndpoints = in.nextInt();
+        int numberOfRequests = in.nextInt();
+        int numberOfCaches = in.nextInt();
+        int capacityOfEachCache = in.nextInt();
+
+        sb.append(numberOfVideos + " ");
+        sb.append(numberOfEndpoints + " ");
+        sb.append(numberOfRequests + " ");
+        sb.append(numberOfCaches + " ");
+        sb.append(capacityOfEachCache + " \n");
+        for (int i = 0; i < numberOfVideos; i++) {
+            sb.append(in.nextInt() + " ");
+        }
+        sb.append("\n");
+        for (int i = 0; i < numberOfEndpoints; i++) {
+            sb.append(in.nextInt() + " ");
+            int numberOfCachesFor = in.nextInt();
+            sb.append(numberOfCachesFor + "\n");
+            for (int j = 0; j < numberOfCachesFor; j++) {
+                sb.append(in.nextInt() + " ");
+                sb.append(in.nextInt() + "\n");
+            }
+        }
+        for (int i = 0; i < numberOfRequests; i++) {
+            sb.append(in.nextInt() + " ");
+            sb.append(in.nextInt() + " ");
+            sb.append(in.nextInt() + "\n");
+        }
+        return sb.toString();
     }
 
     public static void writeOutput(String out) throws IOException {
@@ -33,7 +65,8 @@ public class Main {
         return new Scanner(new FileInputStream(new File("Input/" + fileName)));
     }
 
-    public static City handleInput(Scanner in) {
+    public static City createClearCity(String input) {
+        Scanner in = new Scanner(input);
         int numberOfVideos = in.nextInt();
         int numberOfEndpoints = in.nextInt();
         int numberOfRequests = in.nextInt();
