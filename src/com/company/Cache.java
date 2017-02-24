@@ -1,5 +1,6 @@
 package com.company;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -7,7 +8,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Slaby on 24.02.2017.
  */
-public class Cache {
+public class Cache implements Serializable {
     public int capacity;
     public final int id;
     public List<Video> listOfVideos;

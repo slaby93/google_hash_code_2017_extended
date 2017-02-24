@@ -11,14 +11,16 @@ public class Main {
         Scanner in = getScannerFromInputFile("basic.txt");
 
         City enterCity = handleInput(in);
+        City copy = enterCity.deepClone();
         enterCity.cacheList.get(0).addVideo(enterCity.videoList.get(2));
         enterCity.cacheList.get(1).addVideo(enterCity.videoList.get(3));
         enterCity.cacheList.get(1).addVideo(enterCity.videoList.get(1));
         enterCity.cacheList.get(2).addVideo(enterCity.videoList.get(0));
         enterCity.cacheList.get(2).addVideo(enterCity.videoList.get(1));
-//        System.out.println(enterCity.computeScore());
+        System.out.println(enterCity.computeScore());
+        System.out.println(copy.computeScore());
 //        System.out.println();
-         writeOutput(enterCity.returnOutput());
+//        writeOutput(enterCity.returnOutput());
     }
 
     public static void writeOutput(String out) throws IOException {

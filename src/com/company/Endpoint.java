@@ -1,11 +1,12 @@
 package com.company;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Created by Slaby on 24.02.2017.
  */
-public class Endpoint {
+public class Endpoint implements Serializable {
     public int id;
     Map<Cache, Integer> connectedCaches;
     Map<Video, Integer> requests;

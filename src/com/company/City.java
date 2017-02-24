@@ -1,11 +1,12 @@
 package com.company;
 
+import java.io.*;
 import java.util.List;
 
 /**
  * Created by Slaby on 24.02.2017.
  */
-public class City {
+public class City implements Serializable {
 
     List<Cache> cacheList;
     List<Endpoint> endpointList;
@@ -47,5 +48,21 @@ public class City {
             }
         });
         return sb.toString();
+    }
+
+    public City deepClone() {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(this);
+
+            ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            return (City) ois.readObject();
+        } catch (IOException e) {
+            return null;
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
     }
 }
