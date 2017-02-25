@@ -1,19 +1,51 @@
 package com.company;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
+    volatile static Map<Long, String> results;
 
     public static void main(String[] args) throws Exception {
-
+        results = new HashMap<>();
+//        String input = interceptInput(getScannerFromInputFile("qwe.txt"));
         String input = interceptInput(getScannerFromInputFile("vidi"));
+//        String input = interceptInput(getScannerFromInputFile("kittens"));
+        final int numberOfIteratrions = 1;
+        final int numberOfThreads = 1;
+        ExecutorService es = Executors.newFixedThreadPool(numberOfThreads);
+        for (int i = 0; i < numberOfThreads; i++) {
+            int finalI = i;
+            es.submit(() -> {
+                try {
+                    Solution.main(input, finalI, numberOfIteratrions);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+        es.shutdown();
+        es.awaitTermination(120, TimeUnit.MINUTES);
 
-        Solution.main(input);
+        long finalScore = 0;
+        String result = "";
+        for(Long l : results.keySet()){
+            if(l > finalScore ){
+                finalScore = l;
+                result = results.get(l);
+            }
+        }
+        System.out.println("FinAL SCORE: " + finalScore);
+        Main.writeOutput(result);
+
     }
 
+    public static void addResult(long score, String result) {
+        results.put(score, result);
+    }
 
     public static String interceptInput(Scanner in) {
         StringBuilder sb = new StringBuilder();
@@ -66,6 +98,7 @@ public class Main {
         int numberOfRequests = in.nextInt();
         int numberOfCaches = in.nextInt();
         int capacityOfEachCache = in.nextInt();
+        int smallestVideoSize = Integer.MAX_VALUE;
 
         //////////////////////////////// CREATE CACHES ////////////////////////////////
         List<Cache> listOfCaches = new ArrayList<>();
@@ -80,6 +113,9 @@ public class Main {
         for (int i = 0; i < numberOfVideos; i++) {
             int sizeOfVideo = in.nextInt();
             listOfVideos.add(new Video(i, sizeOfVideo));
+            if (sizeOfVideo < smallestVideoSize) {
+                smallestVideoSize = sizeOfVideo;
+            }
         }
         ///////////////////////////////////////////////////////////////////////////////
 
@@ -110,10 +146,12 @@ public class Main {
             int videoId = in.nextInt();
             int endpointId = in.nextInt();
             int numberOfTimesVideoIsRequested = in.nextInt();
-            listOfEndpoints.get(endpointId).addRequest(listOfVideos.get(videoId), numberOfTimesVideoIsRequested);
+            listOfEndpoints
+                    .get(endpointId)
+                    .addRequest(listOfVideos.get(videoId), numberOfTimesVideoIsRequested);
         }
         ///////////////////////////////////////////////////////////////////////////////
-        return new City(listOfCaches, listOfEndpoints, listOfVideos);
+        return new City(listOfCaches, listOfEndpoints, listOfVideos, smallestVideoSize);
     }
 
 }

@@ -31,14 +31,15 @@ public class Endpoint implements Serializable {
         return this.listOfCaches;
     }
 
-    public long computeScore() {
-        final long[] score = {0};
+    public long[] computeScore() {
+        final long[] score = {0,0};
         this.getVideos().forEach(video -> {
             int lowestLat = findLowestLatForVideo(video);
             int numberOfRequests = this.requests.get(video);
-            score[0] += lowestLat * numberOfRequests;
+            score[0] +=  lowestLat * numberOfRequests;
+            score[1] += numberOfRequests;
         });
-        return score[0];
+        return score;
 
     }
 
@@ -63,7 +64,9 @@ public class Endpoint implements Serializable {
     }
 
     public void addRequest(Video v, Integer numberOfRequests) {
-        listOfVideos.add(v);
+        if(!listOfVideos.contains(v)){
+            listOfVideos.add(v);
+        }
         listOfVideos.sort(Comparator.comparingInt(a -> a.id));
         requests.put(v, numberOfRequests);
     }

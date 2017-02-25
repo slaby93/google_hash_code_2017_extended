@@ -1,6 +1,7 @@
 package com.company;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -11,19 +12,33 @@ public class City implements Serializable {
     List<Cache> cacheList;
     List<Endpoint> endpointList;
     List<Video> videoList;
+    int smallestVideoSize = Integer.MAX_VALUE;
 
-    City(List<Cache> caches, List<Endpoint> endpoints, List<Video> videos) {
+    City(List<Cache> caches, List<Endpoint> endpoints, List<Video> videos, int smallestVideoSize) {
         cacheList = caches;
         endpointList = endpoints;
         videoList = videos;
+        this.smallestVideoSize = smallestVideoSize;
+    }
+
+    public boolean canFitMore() {
+        boolean result = false;
+        for (Cache cache : cacheList) {
+            if (cache.capacity >= smallestVideoSize) {
+                result = true;
+            }
+        }
+        return result;
     }
 
     public long computeScore() {
-        final long[] score = {0};
+        final long[] score = {0, 0};
         this.endpointList.forEach(endpoint -> {
-            score[0] += endpoint.computeScore();
+            long[] scr = endpoint.computeScore();
+            score[0] += scr[0];
+            score[1] += scr[1];
         });
-        return score[0];
+        return ((score[0] * 1000) / score[1]);
     }
 
     public String returnOutput() {
@@ -45,21 +60,5 @@ public class City implements Serializable {
             }
         });
         return sb.toString();
-    }
-
-    public City deepClone() {
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(baos);
-            oos.writeObject(this);
-
-            ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-            ObjectInputStream ois = new ObjectInputStream(bais);
-            return (City) ois.readObject();
-        } catch (IOException e) {
-            return null;
-        } catch (ClassNotFoundException e) {
-            return null;
-        }
     }
 }

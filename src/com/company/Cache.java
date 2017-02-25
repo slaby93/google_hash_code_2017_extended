@@ -20,10 +20,10 @@ public class Cache implements Serializable {
     }
 
     public void addVideo(Video v) {
-        this.capacity -= v.size;
         if(this.capacity < 0 || this.doesContainVideo(v)){
             throw new Error("Blad przy wrzucaniu video do cache");
         }
+        this.capacity -= v.size;
         listOfVideos.add(v);
     }
 
