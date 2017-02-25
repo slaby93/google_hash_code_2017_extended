@@ -1,8 +1,6 @@
 package com.company;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Created by Slaby on 24.02.2017.
@@ -17,6 +15,11 @@ public class Solution {
         for (int i = 0; i < numberOfIterationr; i++) {
             City c = Main.createClearCity(input);
 //            fillRandomlyCity(c);
+            c.cacheList.get(0).addVideo(c.videoList.get(2));
+            c.cacheList.get(1).addVideo(c.videoList.get(3));
+            c.cacheList.get(1).addVideo(c.videoList.get(1));
+            c.cacheList.get(2).addVideo(c.videoList.get(0));
+            c.cacheList.get(2).addVideo(c.videoList.get(1));
             long tmp = c.computeScore();
             if (tmp > score) {
                 sol = c;
@@ -32,11 +35,7 @@ public class Solution {
 
 
     public static City fillRandomlyCity(City in) {
-        int numberOfCaches = in.cacheList.size();
-        List<Video> videoList = in.videoList;
-        List<Cache> cacheList = in.cacheList;
 
-        while (in.canFitMore()) {
             for (Endpoint e : in.endpointList) {
                 for (Video v : e.getVideos()) {
                     for (Cache c : e.getCaches()) {
@@ -46,7 +45,6 @@ public class Solution {
                     }
                 }
             }
-        }
         return in;
     }
 

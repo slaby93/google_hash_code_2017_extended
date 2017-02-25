@@ -32,15 +32,23 @@ public class Endpoint implements Serializable {
     }
 
     public long[] computeScore() {
-        final long[] score = {0,0};
-        this.getVideos().forEach(video -> {
-            int lowestLat = findLowestLatForVideo(video);
-            int numberOfRequests = this.requests.get(video);
-            score[0] +=  lowestLat * numberOfRequests;
-            score[1] += numberOfRequests;
-        });
-        return score;
-
+        long score = 0;
+        int lowestLatency = latencyToDataCenter;
+        int TotalnumberOfRequests = 0;
+        int tmpLat = 0;
+        for(Video v : requests.keySet()){
+            for(Cache c :connectedCaches.keySet()){
+                if(c.doesContainVideo(v)){
+                    tmpLat = connectedCaches.get(c);
+                    if(tmpLat < lowestLatency){
+                        lowestLatency = tmpLat;
+                    }
+                }
+            }
+            TotalnumberOfRequests += requests.get(v);
+            score += (requests.get(v) * (latencyToDataCenter - lowestLatency));
+        }
+        return new long[]{score,lowestLatency};
     }
 
     private int findLowestLatForVideo(Video v) {
@@ -64,7 +72,7 @@ public class Endpoint implements Serializable {
     }
 
     public void addRequest(Video v, Integer numberOfRequests) {
-        if(!listOfVideos.contains(v)){
+        if (!listOfVideos.contains(v)) {
             listOfVideos.add(v);
         }
         listOfVideos.sort(Comparator.comparingInt(a -> a.id));

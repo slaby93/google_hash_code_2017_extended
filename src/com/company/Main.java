@@ -11,24 +11,12 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         results = new HashMap<>();
-//        String input = interceptInput(getScannerFromInputFile("qwe.txt"));
-        String input = interceptInput(getScannerFromInputFile("vidi"));
+        String input = interceptInput(getScannerFromInputFile("qwe.txt"));
+//        String input = interceptInput(getScannerFromInputFile("vidi"));
 //        String input = interceptInput(getScannerFromInputFile("kittens"));
         final int numberOfIteratrions = 1;
         final int numberOfThreads = 1;
-        ExecutorService es = Executors.newFixedThreadPool(numberOfThreads);
-        for (int i = 0; i < numberOfThreads; i++) {
-            int finalI = i;
-            es.submit(() -> {
-                try {
-                    Solution.main(input, finalI, numberOfIteratrions);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-        }
-        es.shutdown();
-        es.awaitTermination(120, TimeUnit.MINUTES);
+
 
         long finalScore = 0;
         String result = "";
